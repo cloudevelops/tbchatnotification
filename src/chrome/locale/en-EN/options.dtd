@@ -1,12 +1,12 @@
-<!ENTITY prefwindow.title "Thunderbird Chat Notification - settings">
-<!ENTITY paneMain.title "Main">
-<!ENTITY shownotification.label "Show notification">
+<!ENTITY prefwindow.title "Thunderbird Chat Notification - Preferences">
+<!ENTITY paneMain.title "Thunderbird Chat Notification - Preferences">
+<!ENTITY shownotification.label "Show notifications">
 <!ENTITY shownotification.accesskey "N">
 <!ENTITY showbody.label "Show message body">
 <!ENTITY showbody.accesskey "S">
 <!ENTITY playsound.label "Play sound">
 <!ENTITY playsound.accesskey "P">
-<!ENTITY soundfile.label "Custom sound">
+<!ENTITY soundfile.label "Set custom sound">
 <!ENTITY playsoundfocused.label "Play sound also for active focused conversation">
 <!ENTITY playsoundfocused.accesskey "F">
 <!ENTITY trayicon.label "Show icon in system tray area">
