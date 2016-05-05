@@ -7,7 +7,7 @@ const Ci = Components.interfaces;
 const Cu = Components.utils;
 
 const osWindows = Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULRuntime).OS == 'WINNT';
-	
+
 var TbChatNotifier = {
 
 	prefs : null,
@@ -18,7 +18,7 @@ var TbChatNotifier = {
 		unreadImCountChanged : 'unread-im-count-changed'
 	},
 	audio : null,
-	
+
 	trayicon : {
 		loaded : false,
 		conversation : ''
@@ -143,11 +143,11 @@ var TbChatNotifier = {
 
 		var observer = this.observer,
 			observerTopics = this.observerTopics;
-			
+
 		for (var topic in observerTopics) {
 			Services.obs.removeObserver(observer, observerTopics[topic]);
 		}
-		
+
 		if (this.trayicon.loaded) {
 			TrayIcon.destroy();
 		}
@@ -187,8 +187,7 @@ var TbChatNotifier = {
 			return;
 		}
 
-		var title = this.string('newmessage') + ' ' + from,
-			text = options.showbody ? (message > 128 ? (message.substring(0, 128) + '...') : message) : this.string('showmessage');
+		var text = options.showbody ? (message > 128 ? (message.substring(0, 128) + '...') : message) : this.string('showmessage');
 
 		if (options.shownotification) {
 			try {
@@ -202,7 +201,7 @@ var TbChatNotifier = {
 
 				Cc['@mozilla.org/alerts-service;1']
 					.getService(Ci.nsIAlertsService)
-					.showAlertNotification('chrome://TbChatNotification/skin/icon32.png', title, text, true, conversation, listener);
+					.showAlertNotification('chrome://TbChatNotification/skin/icon32.png', from, text, true, conversation, listener);
 
 			} catch(e) {
 				// prevents runtime error on platforms that don't implement nsIAlertsService
@@ -211,7 +210,7 @@ var TbChatNotifier = {
 
 		if (osWindows && options.trayicon) {
 			var trayicon = this.trayicon;
-			
+
 			trayicon.conversation = conversation;
 
 			if (!trayicon.loaded) {
@@ -231,7 +230,8 @@ var TbChatNotifier = {
 				trayicon.loaded = true;
 			}
 
-			TrayIcon.show(title);
+			var trayTitle = this.string('newmessage') + ' ' + from;
+			TrayIcon.show(trayTitle);
 		}
 
 		if (options.flashicon) {
@@ -281,7 +281,7 @@ var TbChatNotifier = {
 				var contacts = document.getElementById('contactlistbox');
 				for (var i = 0; i < contacts.itemCount; i++) {
 					var contact = contacts.getItemAtIndex(i);
-					
+
 					if (!contact || contact.hidden || (contact.localName != 'imconv')) {
 						continue;
 					} else if (contact.displayName == conversation) {
