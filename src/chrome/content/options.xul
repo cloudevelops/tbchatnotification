@@ -6,7 +6,7 @@
 
 <prefwindow id="extbrainsip-preferences"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-            title="&prefwindow.title;" width="480">
+            title="&prefwindow.title;" class="preferences-window">
 
     <!-- JS: Options -->
     <script type="application/javascript" src="options.js"/>
