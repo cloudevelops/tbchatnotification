@@ -29,6 +29,10 @@ var TbChatNotifier = {
 		showbody : false,
 		playsound : false,
 		soundfile : '',
+		soundfilemuc: '',
+		soundfileuser: '',
+		soundfilemention: '',
+		soundfilespecific: {},
 		playsoundfocused : false,
 		trayicon : false,
 		flashicon : false,
@@ -47,6 +51,17 @@ var TbChatNotifier = {
 		prefs.QueryInterface(Ci.nsIPrefBranch);
 
 		var options = this.options;
+		options.getObjectPref = function (key) {
+			var result;
+			try {
+				var pref = prefs.getCharPref(key);
+				result = JSON.parse(pref);
+			} catch (e) {}
+			if (result == null || typeof result !== 'object') {
+				result = {};
+			}
+			return result;
+		};
 		options.observe = function(subject, topic, data) {
 			if (topic != 'nsPref:changed') {
 				return;
@@ -65,6 +80,18 @@ var TbChatNotifier = {
 				case 'soundfile' :
 					this.soundfile = prefs.getCharPref('soundfile');
 					break;
+				case 'soundfilemuc' :
+					this.soundfilemuc = prefs.getCharPref('soundfilemuc');
+					break;
+				case 'soundfileuser' :
+					this.soundfileuser = prefs.getCharPref('soundfileuser');
+					break;
+				case 'soundfilemention' :
+					this.soundfilemention = prefs.getCharPref('soundfilemention');
+					break;
+				case 'soundfilespecific' :
+					this.soundfilespecific = this.getObjectPref('soundfilespecific');
+					break;
 				case 'playsoundfocused' :
 					this.playsoundfocused = prefs.getBoolPref('playsoundfocused');
 					break;
@@ -78,7 +105,7 @@ var TbChatNotifier = {
 					this.allincoming = prefs.getBoolPref('allincoming');
 					break;
 			}
-		}
+		};
 		prefs.addObserver('', options, false);
 
 		if (!prefs.getBoolPref('versiondetect')) {
@@ -100,6 +127,10 @@ var TbChatNotifier = {
 		options.showbody = prefs.getBoolPref('showbody');
 		options.playsound = prefs.getBoolPref('playsound');
 		options.soundfile = prefs.getCharPref('soundfile');
+		options.soundfilemuc = prefs.getCharPref('soundfilemuc');
+		options.soundfileuser = prefs.getCharPref('soundfileuser');
+		options.soundfilemention = prefs.getCharPref('soundfilemention');
+		options.soundfilespecific = options.getObjectPref('soundfilespecific');
 		options.playsoundfocused = prefs.getBoolPref('playsoundfocused');
 		options.trayicon = prefs.getBoolPref('trayicon');
 		options.flashicon = prefs.getBoolPref('flashicon');

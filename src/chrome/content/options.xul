@@ -43,6 +43,9 @@
             <preference id="tbchatnotificationSoundFileMention"
                         name="extensions.tbchatnotification.soundfilemention"
                         type="string"/>
+            <preference id="tbchatnotificationSoundFileSpecific"
+                        name="extensions.tbchatnotification.soundfilespecific"
+                        type="string"/>
             <preference id="tbchatnotificationPlaySoundFocused"
                         name="extensions.tbchatnotification.playsoundfocused"
                         type="bool"/>
