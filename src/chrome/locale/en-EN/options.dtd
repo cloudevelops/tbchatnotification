@@ -11,7 +11,11 @@
 <!ENTITY soundfile.label.user "Set the default sound for user to user chats">
 <!ENTITY soundfile.label.mention "Set the default sound when someone mentions you">
 <!ENTITY soundfile.label.specific "Set the sound for a specific user or chat">
+<!ENTITY soundfile.label.specific.add "Add">
 <!ENTITY soundfile.label.delete "Delete">
+<!ENTITY soundfile.label.browse "Browse...">
+<!ENTITY soundfile.label.set "Set sound...">
+<!ENTITY soundfile.label.mute "Mute">
 <!ENTITY playsoundfocused.label "Play sound also for active focused conversation">
 <!ENTITY playsoundfocused.accesskey "F">
 <!ENTITY trayicon.label "Show icon in system tray area">

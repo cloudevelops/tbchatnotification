@@ -69,7 +69,7 @@
             <tabpanels>
                 <!-- General -->
                 <tabpanel>
-                    <vbox>
+                    <vbox flex="1">
                         <checkbox
                                 preference="tbchatnotificationShowNotification"
                                 label="&shownotification.label;"
@@ -108,9 +108,9 @@
                         <groupbox>
                             <caption label="&soundfile.label;"/>
                             <hbox>
-                                <textbox id="textSoundFile" flex="4"
+                                <textbox id="textSoundFile" flex="8"
                                          preference="tbchatnotificationSoundFile"/>
-                                <button label="..." flex="1"
+                                <button label="&soundfile.label.browse;" flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFile');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -119,9 +119,9 @@
                         <groupbox>
                             <caption label="&soundfile.label.muc;"/>
                             <hbox>
-                                <textbox id="textSoundFileMuc" flex="4"
+                                <textbox id="textSoundFileMuc" flex="8"
                                          preference="tbchatnotificationSoundFileMuc"/>
-                                <button label="..." flex="1"
+                                <button label="&soundfile.label.browse;" flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFileMuc');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -130,9 +130,9 @@
                         <groupbox>
                             <caption label="&soundfile.label.user;"/>
                             <hbox>
-                                <textbox id="textSoundFileUser" flex="4"
+                                <textbox id="textSoundFileUser" flex="8"
                                          preference="tbchatnotificationSoundFileUser"/>
-                                <button label="..." flex="1"
+                                <button label="&soundfile.label.browse;" flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFileUser');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -141,9 +141,9 @@
                         <groupbox>
                             <caption label="&soundfile.label.mention;"/>
                             <hbox>
-                                <textbox id="textSoundFileMention" flex="4"
+                                <textbox id="textSoundFileMention" flex="8"
                                          preference="tbchatnotificationSoundFileMention"/>
-                                <button label="..." flex="1"
+                                <button label="&soundfile.label.browse;" flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFileMention');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -154,14 +154,15 @@
 
                             <richlistbox class="specific-sounds-list" flex="1">
                                 <richlistitem>
-                                    <menulist editable="true" flex="2">
+                                    <menulist editable="true" flex="4">
                                         <menupopup>
                                             <menuitem label="Elephants"/>
                                             <menuitem label="Kangaroos"/>
                                             <menuitem label="Bats"/>
                                         </menupopup>
                                     </menulist>
-                                    <button label="..."
+                                    <checkbox label="&soundfile.label.mute;"/>
+                                    <button label="&soundfile.label.set;"
                                             image="chrome://TbChatNotification/skin/ring16.png"
                                             flex="1"/>
                                     <button label="&soundfile.label.delete;"
@@ -171,7 +172,7 @@
                             </richlistbox>
 
                             <vbox flex="1" align="end">
-                                <button label="Add"
+                                <button label="&soundfile.label.specific.add;"
                                         image="chrome://TbChatNotification/skin/add16.png"/>
                             </vbox>
                         </groupbox>
