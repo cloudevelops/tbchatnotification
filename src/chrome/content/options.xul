@@ -34,6 +34,15 @@
             <preference id="tbchatnotificationSoundFile"
                         name="extensions.tbchatnotification.soundfile"
                         type="string"/>
+            <preference id="tbchatnotificationSoundFileMuc"
+                        name="extensions.tbchatnotification.soundfilemuc"
+                        type="string"/>
+            <preference id="tbchatnotificationSoundFileUser"
+                        name="extensions.tbchatnotification.soundfileuser"
+                        type="string"/>
+            <preference id="tbchatnotificationSoundFileMention"
+                        name="extensions.tbchatnotification.soundfilemention"
+                        type="string"/>
             <preference id="tbchatnotificationPlaySoundFocused"
                         name="extensions.tbchatnotification.playsoundfocused"
                         type="bool"/>
@@ -92,29 +101,76 @@
                                 label="&playsoundfocused.label;"
                                 accesskey="&playsoundfocused.accesskey;"
                                 id="tbchatnotificationPlaySoundFocusedCheckbox"/>
-                        <label control="textSoundFile">&soundfile.label;</label>
-                        <hbox>
-                            <textbox id="textSoundFile" flex="4"
-                                     preference="tbchatnotificationSoundFile"/>
-                            <button label="..." flex="1"
-                                    oncommand="tbchatnotification.options.getFile('SoundFile');"/>
-                        </hbox>
-                        <groupbox class="test-menu">
-                            <caption class="test-menu__title"
-                                     label="Set sound for a specific user or chat"/>
 
-                            <richlistbox class="test-menu__list" flex="1">
+                        <groupbox>
+                            <caption label="&soundfile.label;"/>
+                            <hbox>
+                                <textbox id="textSoundFile" flex="4"
+                                         preference="tbchatnotificationSoundFile"/>
+                                <button label="..." flex="1"
+                                        oncommand="tbchatnotification.options.getFile('SoundFile');"
+                                        image="chrome://TbChatNotification/skin/ring16.png"/>
+                            </hbox>
+                        </groupbox>
+
+                        <groupbox>
+                            <caption label="&soundfile.label.muc;"/>
+                            <hbox>
+                                <textbox id="textSoundFileMuc" flex="4"
+                                         preference="tbchatnotificationSoundFileMuc"/>
+                                <button label="..." flex="1"
+                                        oncommand="tbchatnotification.options.getFile('SoundFileMuc');"
+                                        image="chrome://TbChatNotification/skin/ring16.png"/>
+                            </hbox>
+                        </groupbox>
+
+                        <groupbox>
+                            <caption label="&soundfile.label.user;"/>
+                            <hbox>
+                                <textbox id="textSoundFileUser" flex="4"
+                                         preference="tbchatnotificationSoundFileUser"/>
+                                <button label="..." flex="1"
+                                        oncommand="tbchatnotification.options.getFile('SoundFileUser');"
+                                        image="chrome://TbChatNotification/skin/ring16.png"/>
+                            </hbox>
+                        </groupbox>
+
+                        <groupbox>
+                            <caption label="&soundfile.label.mention;"/>
+                            <hbox>
+                                <textbox id="textSoundFileMention" flex="4"
+                                         preference="tbchatnotificationSoundFileMention"/>
+                                <button label="..." flex="1"
+                                        oncommand="tbchatnotification.options.getFile('SoundFileMention');"
+                                        image="chrome://TbChatNotification/skin/ring16.png"/>
+                            </hbox>
+                        </groupbox>
+
+                        <groupbox>
+                            <caption label="&soundfile.label.specific;"/>
+
+                            <richlistbox class="specific-sounds-list" flex="1">
                                 <richlistitem>
-                                    <menulist editable="true" flex="4">
+                                    <menulist editable="true" flex="2">
                                         <menupopup>
                                             <menuitem label="Elephants"/>
                                             <menuitem label="Kangaroos"/>
                                             <menuitem label="Bats"/>
                                         </menupopup>
                                     </menulist>
-                                    <button label="..." flex="1"/>
+                                    <button label="..."
+                                            image="chrome://TbChatNotification/skin/ring16.png"
+                                            flex="1"/>
+                                    <button label="&soundfile.label.delete;"
+                                            image="chrome://TbChatNotification/skin/delete16.png"
+                                            flex="1"/>
                                 </richlistitem>
                             </richlistbox>
+
+                            <vbox flex="1" align="end">
+                                <button label="Add"
+                                        image="chrome://TbChatNotification/skin/add16.png"/>
+                            </vbox>
                         </groupbox>
                     </vbox>
                 </tabpanel>

@@ -1,19 +1,7 @@
-/* Preferences window
---------------------------------------------------------- */
 .preferences-window {
     max-width: 480px;
 }
 
-/* Other
---------------------------------------------------------- */
-.test-menu {
-    margin-top: 20px;
-}
-
-.test-menu__title {
-    margin-bottom: 10px;
-}
-
-.test-menu__list {
-    height: 150px;
+.specific-sounds-list {
+    height: 100px;
 }

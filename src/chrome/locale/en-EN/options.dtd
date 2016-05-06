@@ -2,11 +2,16 @@
 <!ENTITY paneMain.title "Thunderbird Chat Notification - Preferences">
 <!ENTITY shownotification.label "Show notifications">
 <!ENTITY shownotification.accesskey "N">
-<!ENTITY showbody.label "Show message body">
+<!ENTITY showbody.label "Show message body in the notification popup">
 <!ENTITY showbody.accesskey "S">
 <!ENTITY playsound.label "Play sound">
 <!ENTITY playsound.accesskey "P">
-<!ENTITY soundfile.label "Set custom sound">
+<!ENTITY soundfile.label "Set the default sound for all notifications">
+<!ENTITY soundfile.label.muc "Set the default sound for MUC (multi-user chats)">
+<!ENTITY soundfile.label.user "Set the default sound for user to user chats">
+<!ENTITY soundfile.label.mention "Set the default sound when someone mentions you">
+<!ENTITY soundfile.label.specific "Set the sound for a specific user or chat">
+<!ENTITY soundfile.label.delete "Delete">
 <!ENTITY playsoundfocused.label "Play sound also for active focused conversation">
 <!ENTITY playsoundfocused.accesskey "F">
 <!ENTITY trayicon.label "Show icon in system tray area">
