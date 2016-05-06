@@ -2,9 +2,80 @@
 
 this.tbchatnotification = this.tbchatnotification || {};
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 "use strict";
 
 var options = {
+	/**
+	 * Initialize logic
+	 */
+	load : function () {
+		this.setupPrefs();
+		this.updateTrayIcon();
+		this.updateControls();
+		this.renderSoundsList();
+	},
+
+	setupPrefs : function () {
+		this.prefs = Components
+			.classes['@mozilla.org/preferences-service;1']
+			.getService(Ci.nsIPrefService)
+			.getBranch('extensions.tbchatnotification.');
+		this.prefs.QueryInterface(Ci.nsIPrefBranch);
+	},
+
+	/**
+	 * Update state of the tray icon
+	 */
+	updateTrayIcon : function () {
+		if (Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULRuntime).OS != 'WINNT') {
+			this.$('TrayIconCheckbox').hidden = true;
+			window.sizeToContent();
+		}
+	},
+
+	/**
+	 * Add a new item to the list of specific sounds
+	 * @param containerId string
+	 */
+	addListItem : function (containerId) {
+		var container = this.$(containerId);
+		var sampleItem = container.firstChild;
+		var newItem = sampleItem.cloneNode(true);
+		newItem.hidden = false;
+		container.appendChild(newItem);
+	},
+
+	/**
+	 * Remove an item from the list of specific sounds
+	 * @param button
+	 */
+	deleteListItem : function (button) {
+		var item = button.parentNode;
+		item.remove();
+	},
+
+	renderSoundsList : function () {
+		var self = this;
+		var sounds = this.getSoundsListPref();
+		Object.keys(sounds).forEach(function (key) {
+			// TODO: render list elements
+		});
+	},
+
+	getSoundsListPref : function () {
+		var pref = this.prefs.getCharPref('soundfilespecific');
+		var result;
+		try {
+			result = JSON.parse(pref);
+		} catch (e) {}
+		if (result == null || typeof result !== 'object') {
+			result = {};
+		}
+		return result;
+	},
 
 	/**
 	* Show select file dialog and save path to textbox.
@@ -71,18 +142,13 @@ var options = {
 		}
 	}
 
-}
+};
 
 /**
  * Load options...
  */
 window.addEventListener('load', function() {
-	if (Components.classes['@mozilla.org/xre/app-info;1'].getService(Components.interfaces.nsIXULRuntime).OS != 'WINNT') {
-		options.$('TrayIconCheckbox').hidden = true;
-		window.sizeToContent();
-	}
-
-	options.updateControls();
+	options.load();
 }, false);
 
 tbchatnotification.options = options;

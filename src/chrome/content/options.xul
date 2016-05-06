@@ -152,28 +152,28 @@
                         <groupbox>
                             <caption label="&soundfile.label.specific;"/>
 
-                            <richlistbox class="specific-sounds-list" flex="1">
-                                <richlistitem>
+                            <richlistbox id="tbchatnotificationSoundsList" class="specific-sounds-list" flex="1">
+                                <richlistitem hidden="true">
                                     <menulist editable="true" flex="4">
                                         <menupopup>
-                                            <menuitem label="Elephants"/>
-                                            <menuitem label="Kangaroos"/>
-                                            <menuitem label="Bats"/>
                                         </menupopup>
                                     </menulist>
                                     <checkbox label="&soundfile.label.mute;"/>
+                                    <textbox hidden="true"/>
                                     <button label="&soundfile.label.set;"
                                             image="chrome://TbChatNotification/skin/ring16.png"
                                             flex="1"/>
                                     <button label="&soundfile.label.delete;"
                                             image="chrome://TbChatNotification/skin/delete16.png"
-                                            flex="1"/>
+                                            flex="1"
+                                            oncommand="tbchatnotification.options.deleteListItem(this)"/>
                                 </richlistitem>
                             </richlistbox>
 
                             <vbox flex="1" align="end">
                                 <button label="&soundfile.label.specific.add;"
-                                        image="chrome://TbChatNotification/skin/add16.png"/>
+                                        image="chrome://TbChatNotification/skin/add16.png"
+                                        oncommand="tbchatnotification.options.addListItem('SoundsList')"/>
                             </vbox>
                         </groupbox>
                     </vbox>
