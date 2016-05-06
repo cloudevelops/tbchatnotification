@@ -18,6 +18,7 @@ var TbChatNotifier = {
 		unreadImCountChanged : 'unread-im-count-changed'
 	},
 	audio : null,
+	defaultSound: 'chrome://TbChatNotification/content/sound/notification.ogg',
 
 	trayicon : {
 		loaded : false,
@@ -150,7 +151,7 @@ var TbChatNotifier = {
 		var observer = this.observer = {
 			observe: function(subject, topic, data) {
 				if (subject.incoming && (((topic == observerTopics.newDirectedIncomingMessage) && !options.allincoming) || ((topic == observerTopics.newText) && options.allincoming))) {
-					notifier.notify(subject.alias, subject.originalMessage, imServices.conversations.getUIConversation(subject.conversation).title);
+					notifier.notify(subject, imServices.conversations.getUIConversation(subject.conversation).title);
 				} else if (topic == observerTopics.unreadImCountChanged) {
 					if (data == 0) {
 						notifier.closeTrayIcon()
@@ -186,32 +187,85 @@ var TbChatNotifier = {
 
 	/**
 	* Play sound.
+	 * @param subject object
 	*/
-	play : function() {
-		var audio = this.audio,
-			options = this.options;
-
-		if (!audio) {
-			audio = new Audio();
+	play : function(subject) {
+		if (this.audio == null) {
+			this.audio = new Audio();
 		}
 
-		audio.src = (options.soundfile ? ('file://' + options.soundfile) : 'chrome://TbChatNotification/content/sound/notification.ogg');
-		audio.play();
+		this.audio.pause();
+		this.audio.src = this.getAudioSrc(subject);
+		this.audio.play();
+	},
+
+	/**
+	 * Get get audio file for the notification
+	 * @param subject object
+	 */
+	getAudioSrc : function (subject) {
+		var src;
+
+		if (this.canNotifyOfMention(subject)) {
+			src = this.options.soundfilemention;
+		} else if (this.canNotifyOfMUC(subject)) {
+			src = this.options.soundfilemuc;
+		} else if (this.canNotifyOfPM(subject)) {
+			src = this.options.soundfileuser;
+		} else if (this.options.soundfile) {
+			src = this.options.soundfile;
+		}
+		// TODO: add logic for specific user / MUC notification (also mute)
+
+		if (src == null) {
+			return this.defaultSound;
+		} else {
+			return 'file://' + src;
+		}
+	},
+
+	/**
+	 * Check if can notify about a mention in a message
+	 * @param subject object
+	 * @returns {boolean}
+	 */
+	canNotifyOfMention : function (subject) {
+		return Boolean(subject.conversation.isChat
+			&& subject.containsNick && this.options.soundfilemention);
+	},
+
+	/**
+	 * Check if can notify about a message in a MUC
+	 * @param subject object
+	 * @returns {boolean}
+	 */
+	canNotifyOfMUC : function (subject) {
+		return Boolean(subject.conversation.isChat && this.options.soundfilemuc);
+	},
+
+	/**
+	 * Check if can notify about a private message
+	 * @param subject object
+	 * @returns {boolean}
+	 */
+	canNotifyOfPM : function (subject) {
+		return Boolean(!subject.conversation.isChat && this.options.soundfileuser);
 	},
 
 	/**
 	 * Show non-modal alert message.
-	 * @param from string
-	 * @param message string
+	 * @param subject object
 	 * @param conversation string
 	 */
-	notify : function(from, message, conversation) {
-		var notifier = this,
-			options = this.options,
-			activeConversation = this.isConversationActive(conversation);
+	notify : function(subject, conversation) {
+		var notifier = this;
+		var options = this.options;
+		var activeConversation = this.isConversationActive(conversation);
+		var from = subject.alias;
+		var message = subject.originalMessage;
 
 		if (options.playsound && (!activeConversation || options.playsoundfocused)) {
-			this.play();
+			this.play(subject);
 		}
 
 		if (activeConversation) {
