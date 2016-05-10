@@ -14,6 +14,7 @@ var options = {
 	load : function () {
 		this.setupPrefs();
 		this.setupContacts();
+		this.setupConversations();
 		this.updateTrayIcon();
 		this.updateControls();
 		this.renderSoundsList();
@@ -29,6 +30,11 @@ var options = {
 	setupContacts : function () {
 		this.contacts = Cc['@mozilla.org/chat/contacts-service;1']
 			.getService(Ci.imIContactsService);
+	},
+
+	setupConversations: function () {
+		this.conversations = Cc['@mozilla.org/chat/conversations-service;1']
+			.getService(Ci.imIConversationsService);
 	},
 
 	/**
@@ -49,6 +55,7 @@ var options = {
 		var container = this.$(containerId);
 		var sampleItem = container.firstChild;
 		var newItem = sampleItem.cloneNode(true);
+		this.addContactsForCompletion(newItem.querySelector('menulist > menupopup'));
 		newItem.hidden = false;
 		container.appendChild(newItem);
 	},
@@ -60,6 +67,25 @@ var options = {
 	deleteListItem : function (button) {
 		var item = button.parentNode;
 		item.remove();
+	},
+
+	getContactsForCompletion : function () {
+		var contacts = this.contacts.getContacts().map(function (c) {
+			return c.displayName;
+		});
+		// FIX: not an array => has no each method
+		//this.conversations.getUIConversations().each(function (c) {
+		//	if (contacts.indexOf(c.title) === -1) {
+		//		contacts.push(c.title);
+		//	}
+		//});
+		return contacts;
+	},
+
+	addContactsForCompletion : function (container) {
+		container.innerHTML = this.getContactsForCompletion().map(function (c) {
+			return '<menuitem label="' + c + '"/>';
+		}).join('');
 	},
 
 	renderSoundsList : function () {
