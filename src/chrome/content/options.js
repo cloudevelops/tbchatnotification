@@ -13,17 +13,22 @@ var options = {
 	 */
 	load : function () {
 		this.setupPrefs();
+		this.setupContacts();
 		this.updateTrayIcon();
 		this.updateControls();
 		this.renderSoundsList();
 	},
 
 	setupPrefs : function () {
-		this.prefs = Components
-			.classes['@mozilla.org/preferences-service;1']
+		this.prefs = Cc['@mozilla.org/preferences-service;1']
 			.getService(Ci.nsIPrefService)
 			.getBranch('extensions.tbchatnotification.');
 		this.prefs.QueryInterface(Ci.nsIPrefBranch);
+	},
+
+	setupContacts : function () {
+		this.contacts = Cc['@mozilla.org/chat/contacts-service;1']
+			.getService(Ci.imIContactsService);
 	},
 
 	/**
