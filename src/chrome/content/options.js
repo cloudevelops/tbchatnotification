@@ -18,6 +18,11 @@ var options = {
 		soundsList: '#tbchatnotificationSoundsList'
 	},
 
+	defaultUserSoundPrefs : {
+		mute: false,
+		soundFile: ''
+	},
+
 	/**
 	 * Initialize logic
 	 */
@@ -80,7 +85,7 @@ var options = {
 			if (this.getSoundsListPref().hasOwnProperty(userId)) {
 				alert('Settings for this user already exist');
 			} else {
-				this.addListItem(userId);
+				this.addListItem(userId, this.defaultUserSoundPrefs);
 			}
 		} else {
 			alert('You must specify a user or a chat');
@@ -89,15 +94,19 @@ var options = {
 
 	/**
 	 * Add a new item to the list of specific sounds
-	 * @param userId string
+	 * @param userId {String}
+	 * @param options {Object}
 	 */
-	addListItem : function (userId) {
+	addListItem : function (userId, options) {
 		var container = this.getSoundsListContainer();
 		var sampleItem = container.firstChild;
 		var newItem = sampleItem.cloneNode(true);
 		newItem.hidden = false;
 		container.appendChild(newItem);
+
         newItem.querySelector(this.selectors.userId).value = userId;
+		newItem.querySelector(this.selectors.mute).checked = options.mute;
+		newItem.querySelector(this.selectors.soundFile).value = options.soundFile;
 	},
 
 	/**
@@ -132,9 +141,10 @@ var options = {
 
 	renderSoundsList : function () {
 		var self = this;
-		var sounds = this.getSoundsListPref();
-		Object.keys(sounds).forEach(function (key) {
-			// TODO: render list elements
+		var prefs = this.getSoundsListPref();
+		this.applicationService.console.log('prefs: ' + JSON.stringify(prefs));
+		Object.keys(prefs).sort().forEach(function (key) {
+			self.addListItem(key, prefs[key]);
 		});
 		this.addContactsForCompletion();
 	},
