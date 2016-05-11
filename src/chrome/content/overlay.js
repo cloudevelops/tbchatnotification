@@ -110,21 +110,6 @@ var TbChatNotifier = {
 		};
 		prefs.addObserver('', options, false);
 
-		if (!prefs.getBoolPref('versiondetect')) {
-			var appInfo = Components
-				.classes['@mozilla.org/xre/app-info;1']
-				.getService(Components.interfaces.nsIXULAppInfo);
-			var versionChecker = Components
-				.classes['@mozilla.org/xpcom/version-comparator;1']
-				.getService(Components.interfaces.nsIVersionComparator);
-
-			// disable for Thunderbird > 31, there is another chat notification system
-			if (versionChecker.compare(appInfo.version, '31') >= 0) {
-				prefs.setBoolPref('versiondetect', true);
-				prefs.setBoolPref('shownotification', false);
-			}
-		}
-
 		options.shownotification = prefs.getBoolPref('shownotification');
 		options.showbody = prefs.getBoolPref('showbody');
 		options.playsound = prefs.getBoolPref('playsound');

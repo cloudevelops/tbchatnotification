@@ -11,5 +11,3 @@ pref('extensions.tbchatnotification.playsoundfocused', false);
 pref('extensions.tbchatnotification.trayicon', false);
 pref('extensions.tbchatnotification.flashicon', false);
 pref('extensions.tbchatnotification.allincoming', false);
-// --------
-pref('extensions.tbchatnotification.versiondetect', false);
