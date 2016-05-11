@@ -45,9 +45,16 @@ var TbChatNotifier = {
 	* Load chat notifier.
 	*/
 	load : function() {
-		// Load preferences
-		var prefs = this.prefs = Components
-		  .classes['@mozilla.org/preferences-service;1']
+		var notifier = this;
+
+		// Load thunderbird chat's preferences
+		this.builtinPrefs = Cc['@mozilla.org/preferences-service;1']
+			.getService(Ci.nsIPrefService)
+			.getBranch('mail.chat.');
+		this.builtinPrefs.QueryInterface(Ci.nsIPrefBranch);
+
+		// Load plugin's preferences
+		var prefs = this.prefs = Cc['@mozilla.org/preferences-service;1']
 		  .getService(Ci.nsIPrefService)
 		  .getBranch('extensions.tbchatnotification.');
 		prefs.QueryInterface(Ci.nsIPrefBranch);
@@ -72,12 +79,14 @@ var TbChatNotifier = {
 			switch(data) {
 				case 'shownotification' :
 					this.shownotification = prefs.getBoolPref('shownotification');
+					notifier.updateBuiltinNotificationsSettings();
 					break;
 				case 'showbody' :
 					this.showbody = prefs.getBoolPref('showbody');
 					break;
 				case 'playsound' :
 					this.playsound = prefs.getBoolPref('playsound');
+					notifier.updateBuiltinSoundSettings();
 					break;
 				case 'soundfile' :
 					this.soundfile = prefs.getCharPref('soundfile');
@@ -111,8 +120,11 @@ var TbChatNotifier = {
 		prefs.addObserver('', options, false);
 
 		options.shownotification = prefs.getBoolPref('shownotification');
-		options.showbody = prefs.getBoolPref('showbody');
+		this.updateBuiltinNotificationsSettings();
 		options.playsound = prefs.getBoolPref('playsound');
+		this.updateBuiltinSoundSettings();
+
+		options.showbody = prefs.getBoolPref('showbody');
 		options.soundfile = prefs.getCharPref('soundfile');
 		options.soundfilemuc = prefs.getCharPref('soundfilemuc');
 		options.soundfileuser = prefs.getCharPref('soundfileuser');
@@ -133,7 +145,6 @@ var TbChatNotifier = {
 
 		var observerTopics = this.observerTopics;
 
-		var notifier = this;
 		var observer = this.observer = {
 			observe: function(subject, topic, data) {
 				if (subject.incoming && (((topic == observerTopics.newDirectedIncomingMessage) && !options.allincoming) || ((topic == observerTopics.newText) && options.allincoming))) {
@@ -169,6 +180,20 @@ var TbChatNotifier = {
 		if (this.trayicon.loaded) {
 			TrayIcon.destroy();
 		}
+	},
+
+	/**
+	 * Update state of the builtin sound notifications
+	 */
+	updateBuiltinSoundSettings : function () {
+		this.builtinPrefs.setBoolPref('play_sound', !this.options.playsound);
+	},
+
+	/**
+	 * Update state of the builtin popup notifications
+	 */
+	updateBuiltinNotificationsSettings : function () {
+		this.builtinPrefs.setBoolPref('show_desktop_notifications', !this.options.shownotification);
 	},
 
 	/**
