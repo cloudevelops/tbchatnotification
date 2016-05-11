@@ -8,6 +8,16 @@ const Ci = Components.interfaces;
 "use strict";
 
 var options = {
+	// Selectors for the elements
+	selectors : {
+		userId: '.tbchatnotificationUser',
+		mute: '.tbchatnotificationMute',
+		soundFile: '.tbchatnotificationSoundFile',
+		usersList: '#tbchatnotificationUsersList',
+		usersListPopup: '#tbchatnotificationUsersList > menupopup',
+		soundsList: '#tbchatnotificationSoundsList'
+	},
+
 	/**
 	 * Initialize logic
 	 */
@@ -54,16 +64,40 @@ var options = {
 	},
 
 	/**
-	 * Add a new item to the list of specific sounds
-	 * @param containerId string
+	 * Get container for the user/chat-specific settings
+	 * @returns {Element}
 	 */
-	addListItem : function (containerId) {
-		var container = this.$(containerId);
+	getSoundsListContainer : function () {
+		return document.querySelector(this.selectors.soundsList);
+	},
+
+	/**
+	 * Handler for the click event of the Add button
+	 */
+	onAddButtonClick : function () {
+		var userId = document.querySelector(this.selectors.usersList).value;
+        if (userId) {
+			if (this.getSoundsListPref().hasOwnProperty(userId)) {
+				alert('Settings for this user already exist');
+			} else {
+				this.addListItem(userId);
+			}
+		} else {
+			alert('You must specify a user or a chat');
+		}
+	},
+
+	/**
+	 * Add a new item to the list of specific sounds
+	 * @param userId string
+	 */
+	addListItem : function (userId) {
+		var container = this.getSoundsListContainer();
 		var sampleItem = container.firstChild;
 		var newItem = sampleItem.cloneNode(true);
-		this.addContactsForCompletion(newItem.querySelector('menulist > menupopup'));
 		newItem.hidden = false;
 		container.appendChild(newItem);
+        newItem.querySelector(this.selectors.userId).value = userId;
 	},
 
 	/**
@@ -87,7 +121,8 @@ var options = {
 		return contacts.sort();
 	},
 
-	addContactsForCompletion : function (container) {
+	addContactsForCompletion : function () {
+		var container = document.querySelector(this.selectors.usersListPopup);
 		this.getContactsForCompletion().forEach(function (contact) {
 			var menuitem = document.createElement('menuitem');
 			menuitem.setAttribute('label', contact);
@@ -101,6 +136,7 @@ var options = {
 		Object.keys(sounds).forEach(function (key) {
 			// TODO: render list elements
 		});
+		this.addContactsForCompletion();
 	},
 
 	getSoundsListPref : function () {
@@ -115,19 +151,53 @@ var options = {
 		return result;
 	},
 
-	changeUserPref : function (target) {
-		//var item = target.parentNode;
-		this.applicationService.console.log(
-			target.tagName +
-			"   :   " +
-			(target.value || target.checked)
-		);
+	/**
+	 * Update users/chats sound preferences
+	 * @param value {Object}
+	 */
+	setSoundsListPref : function (value) {
+		var serialized;
+		try {
+			serialized = JSON.stringify(value);
+		} catch (e) {
+			serialized = '{}';
+		}
+		this.prefsService.setCharPref('soundfilespecific', serialized);
 	},
 
+	/**
+	 * Set sound preferences for a specific user
+	 * @param userId {String}
+	 * @param options {Object}
+	 */
+	setUserSoundPref : function (userId, options) {
+		var prefs = this.getSoundsListPref();
+		prefs[userId] = options;
+		this.setSoundsListPref(prefs);
+	},
+
+	/** Set sound for a specific user
+	 * @param target
+	 */
 	changeUserSound : function (target) {
-		var textbox = target.parentNode.querySelector('textbox');
+		var textbox = target.parentNode.querySelector(this.selectors.soundFile);
 		this.showFilePicker(textbox);
-		this.changeUserPref(textbox);
+		this.updateUserPrefs(textbox);
+	},
+
+	/**
+	 * Update preferences for a specific user
+	 * @param target
+	 */
+	updateUserPrefs : function (target) {
+		var listItem = target.parentNode;
+		var userId = listItem.querySelector(this.selectors.userId).value;
+		var mute = listItem.querySelector(this.selectors.mute).checked;
+		var soundFile = listItem.querySelector(this.selectors.soundFile).value;
+		this.setUserSoundPref(userId, {
+			mute: mute,
+			soundFile: soundFile
+		});
 	},
 
 	/**

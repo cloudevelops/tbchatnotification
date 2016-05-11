@@ -159,15 +159,13 @@
                             <richlistbox id="tbchatnotificationSoundsList"
                                          class="specific-sounds-list" flex="1">
                                 <richlistitem hidden="true">
-                                    <menulist editable="true" flex="4"
-                                              oncommand="tbchatnotification.options.changeUserPref(this)"
-                                              oninput="tbchatnotification.options.changeUserPref(this)">
-                                        <menupopup>
-                                        </menupopup>
-                                    </menulist>
-                                    <checkbox label="&soundfile.label.mute;"
-                                              oncommand="tbchatnotification.options.changeUserPref(this)"/>
-                                    <textbox hidden="true"/>
+                                    <textbox class="tbchatnotificationUser"
+                                             flex="4" disabled="true"/>
+                                    <checkbox class="tbchatnotificationMute"
+                                              label="&soundfile.label.mute;"
+                                              oncommand="tbchatnotification.options.updateUserPrefs(this)"/>
+                                    <textbox class="tbchatnotificationSoundFile"
+                                             hidden="true"/>
                                     <button label="&soundfile.label.set;"
                                             image="chrome://TbChatNotification/skin/ring16.png"
                                             flex="1"
@@ -179,11 +177,17 @@
                                 </richlistitem>
                             </richlistbox>
 
-                            <vbox flex="1" align="end">
+                            <hbox flex="1">
+                                <menulist id="tbchatnotificationUsersList"
+                                          editable="true" flex="8">
+                                    <menupopup>
+                                    </menupopup>
+                                </menulist>
                                 <button label="&soundfile.label.specific.add;"
                                         image="chrome://TbChatNotification/skin/add16.png"
-                                        oncommand="tbchatnotification.options.addListItem('SoundsList')"/>
-                            </vbox>
+                                        oncommand="tbchatnotification.options.onAddButtonClick()"
+                                        flex="1"/>
+                            </hbox>
                         </groupbox>
                     </vbox>
                 </tabpanel>
