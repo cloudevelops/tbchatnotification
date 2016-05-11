@@ -110,7 +110,8 @@
                             <hbox>
                                 <textbox id="textSoundFile" flex="8"
                                          preference="tbchatnotificationSoundFile"/>
-                                <button label="&soundfile.label.browse;" flex="1"
+                                <button label="&soundfile.label.browse;"
+                                        flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFile');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -121,7 +122,8 @@
                             <hbox>
                                 <textbox id="textSoundFileMuc" flex="8"
                                          preference="tbchatnotificationSoundFileMuc"/>
-                                <button label="&soundfile.label.browse;" flex="1"
+                                <button label="&soundfile.label.browse;"
+                                        flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFileMuc');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -132,7 +134,8 @@
                             <hbox>
                                 <textbox id="textSoundFileUser" flex="8"
                                          preference="tbchatnotificationSoundFileUser"/>
-                                <button label="&soundfile.label.browse;" flex="1"
+                                <button label="&soundfile.label.browse;"
+                                        flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFileUser');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -143,7 +146,8 @@
                             <hbox>
                                 <textbox id="textSoundFileMention" flex="8"
                                          preference="tbchatnotificationSoundFileMention"/>
-                                <button label="&soundfile.label.browse;" flex="1"
+                                <button label="&soundfile.label.browse;"
+                                        flex="1"
                                         oncommand="tbchatnotification.options.getFile('SoundFileMention');"
                                         image="chrome://TbChatNotification/skin/ring16.png"/>
                             </hbox>
@@ -152,17 +156,22 @@
                         <groupbox>
                             <caption label="&soundfile.label.specific;"/>
 
-                            <richlistbox id="tbchatnotificationSoundsList" class="specific-sounds-list" flex="1">
+                            <richlistbox id="tbchatnotificationSoundsList"
+                                         class="specific-sounds-list" flex="1">
                                 <richlistitem hidden="true">
-                                    <menulist editable="true" flex="4">
+                                    <menulist editable="true" flex="4"
+                                              oncommand="tbchatnotification.options.changeUserPref(this)"
+                                              oninput="tbchatnotification.options.changeUserPref(this)">
                                         <menupopup>
                                         </menupopup>
                                     </menulist>
-                                    <checkbox label="&soundfile.label.mute;"/>
+                                    <checkbox label="&soundfile.label.mute;"
+                                              oncommand="tbchatnotification.options.changeUserPref(this)"/>
                                     <textbox hidden="true"/>
                                     <button label="&soundfile.label.set;"
                                             image="chrome://TbChatNotification/skin/ring16.png"
-                                            flex="1"/>
+                                            flex="1"
+                                            oncommand="tbchatnotification.options.changeUserSound(this)"/>
                                     <button label="&soundfile.label.delete;"
                                             image="chrome://TbChatNotification/skin/delete16.png"
                                             flex="1"

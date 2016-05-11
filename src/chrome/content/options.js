@@ -12,12 +12,18 @@ var options = {
 	 * Initialize logic
 	 */
 	load : function () {
+		this.setupApplicationService();
 		this.setupPrefsService();
 		this.setupContactsService();
 		this.setupConversationsService();
 		this.updateTrayIcon();
 		this.updateControls();
 		this.renderSoundsList();
+	},
+
+	setupApplicationService : function () {
+		this.applicationService = Cc["@mozilla.org/steel/application;1"]
+			.getService(Ci.steelIApplication)
 	},
 
 	setupPrefsService : function () {
@@ -109,14 +115,31 @@ var options = {
 		return result;
 	},
 
+	changeUserPref : function (target) {
+		//var item = target.parentNode;
+		this.applicationService.console.log(
+			target.tagName +
+			"   :   " +
+			(target.value || target.checked)
+		);
+	},
+
+	changeUserSound : function (target) {
+		var textbox = target.parentNode.querySelector('textbox');
+		this.showFilePicker(textbox);
+		this.changeUserPref(textbox);
+	},
+
 	/**
 	* Show select file dialog and save path to textbox.
-	* @param string elementId
+	* @param elementId string
 	*/
 	getFile : function(elementId) {
+		this.showFilePicker(this.$(elementId));
+	},
+
+	showFilePicker : function (textbox) {
 		try {
-			var textbox = this.$(elementId);
-		
 			var nsIFilePicker = Components.interfaces.nsIFilePicker;
 			var fp = Components.classes['@mozilla.org/filepicker;1']
 				.createInstance(nsIFilePicker);
