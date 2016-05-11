@@ -258,7 +258,7 @@ var TbChatNotifier = {
 	canNotifyOfSpecificChat : function (subject) {
 		var key = subject.conversation.isChat ? subject.conversation.name : subject.alias;
 		var prefs = this.options.soundfilespecific[key];
-		return Boolean(prefs && prefs.soundFile);
+		return Boolean(prefs && (prefs.mute || prefs.soundFile));
 	},
 
 	/**
