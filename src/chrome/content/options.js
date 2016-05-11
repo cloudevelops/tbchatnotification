@@ -115,6 +115,8 @@ var options = {
 	 */
 	deleteListItem : function (button) {
 		var item = button.parentNode;
+		var userId = item.querySelector(this.selectors.userId).value;
+		this.deleteUserSoundPref(userId);
 		item.remove();
 	},
 
@@ -183,6 +185,16 @@ var options = {
 	setUserSoundPref : function (userId, options) {
 		var prefs = this.getSoundsListPref();
 		prefs[userId] = options;
+		this.setSoundsListPref(prefs);
+	},
+
+	/**
+	 * Delete sound preferences for a specific user
+	 * @param userId {String}
+	 */
+	deleteUserSoundPref : function (userId) {
+		var prefs = this.getSoundsListPref();
+		delete prefs[userId];
 		this.setSoundsListPref(prefs);
 	},
 
