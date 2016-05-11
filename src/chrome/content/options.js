@@ -73,19 +73,20 @@ var options = {
 		var contacts = this.contacts.getContacts().map(function (c) {
 			return c.displayName;
 		});
-		// FIX: not an array => has no each method
-		//this.conversations.getUIConversations().each(function (c) {
-		//	if (contacts.indexOf(c.title) === -1) {
-		//		contacts.push(c.title);
-		//	}
-		//});
-		return contacts;
+		this.conversations.getUIConversations().forEach(function (c) {
+			if (contacts.indexOf(c.title) === -1) {
+				contacts.push(c.title);
+			}
+		});
+		return contacts.sort();
 	},
 
 	addContactsForCompletion : function (container) {
-		container.innerHTML = this.getContactsForCompletion().map(function (c) {
-			return '<menuitem label="' + c + '"/>';
-		}).join('');
+		this.getContactsForCompletion().forEach(function (contact) {
+			var menuitem = document.createElement('menuitem');
+			menuitem.setAttribute('label', contact);
+			container.appendChild(menuitem);
+		});
 	},
 
 	renderSoundsList : function () {
