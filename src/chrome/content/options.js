@@ -12,28 +12,28 @@ var options = {
 	 * Initialize logic
 	 */
 	load : function () {
-		this.setupPrefs();
-		this.setupContacts();
-		this.setupConversations();
+		this.setupPrefsService();
+		this.setupContactsService();
+		this.setupConversationsService();
 		this.updateTrayIcon();
 		this.updateControls();
 		this.renderSoundsList();
 	},
 
-	setupPrefs : function () {
-		this.prefs = Cc['@mozilla.org/preferences-service;1']
+	setupPrefsService : function () {
+		this.prefsService = Cc['@mozilla.org/preferences-service;1']
 			.getService(Ci.nsIPrefService)
 			.getBranch('extensions.tbchatnotification.');
-		this.prefs.QueryInterface(Ci.nsIPrefBranch);
+		this.prefsService.QueryInterface(Ci.nsIPrefBranch);
 	},
 
-	setupContacts : function () {
-		this.contacts = Cc['@mozilla.org/chat/contacts-service;1']
+	setupContactsService : function () {
+		this.contactsService = Cc['@mozilla.org/chat/contacts-service;1']
 			.getService(Ci.imIContactsService);
 	},
 
-	setupConversations: function () {
-		this.conversations = Cc['@mozilla.org/chat/conversations-service;1']
+	setupConversationsService: function () {
+		this.conversationsService = Cc['@mozilla.org/chat/conversations-service;1']
 			.getService(Ci.imIConversationsService);
 	},
 
@@ -70,10 +70,10 @@ var options = {
 	},
 
 	getContactsForCompletion : function () {
-		var contacts = this.contacts.getContacts().map(function (c) {
+		var contacts = this.contactsService.getContacts().map(function (c) {
 			return c.displayName;
 		});
-		this.conversations.getUIConversations().forEach(function (c) {
+		this.conversationsService.getUIConversations().forEach(function (c) {
 			if (contacts.indexOf(c.title) === -1) {
 				contacts.push(c.title);
 			}
@@ -98,7 +98,7 @@ var options = {
 	},
 
 	getSoundsListPref : function () {
-		var pref = this.prefs.getCharPref('soundfilespecific');
+		var pref = this.prefsService.getCharPref('soundfilespecific');
 		var result;
 		try {
 			result = JSON.parse(pref);
