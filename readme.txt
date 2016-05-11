@@ -1,4 +1,4 @@
-Thunderbird Chat Notification © Jakub Trmota, 2014 (http://forrest79.net)
+Thunderbird Chat Notification ï¿½ Jakub Trmota, 2014 (http://forrest79.net)
 
 
 Chat notification for Mozilla Thunderbird. Notification with alert (click on alert open conversation), sound, flash Thunderbird icon and tray icon (only for Windows).
@@ -24,6 +24,7 @@ Run build/build-xpi.bat on Windows or build/build-xpi.sh on Linux. You need only
 
 HISTORY
 =======
+1.4.0 [2016-05-11] - Add many settings for sound notifications: specific sound for user-to-user chats, MUC chats, specific sounds for each user/MUC etc.
 1.3.0 [2014-08-30] - Add option to enable/disable alert notification (automaticaly disable for Thunderbird 31>, because it has own alert notification and if both are active, no notification work)
 1.2.0 [2014-03-20] - New icon, tray icon notification (only for Windows)
 1.1.0 [2014-03-16] - Can flash Thunderbird icon, add posibility to notify for messages from multi-user chats

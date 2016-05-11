@@ -6,7 +6,7 @@
 
 		<em:id>tbchatnotification@forrest79.net</em:id>
 		<em:type>2</em:type>
-		<em:version>1.3.0</em:version>
+		<em:version>1.4.0</em:version>
 		<em:unpack>true</em:unpack>
 		<em:name>Thunderbird Chat Notification</em:name>
 		<em:iconURL>chrome://TbChatNotification/skin/icon32.png</em:iconURL>
