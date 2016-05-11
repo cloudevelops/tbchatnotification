@@ -19,6 +19,7 @@ var TbChatNotifier = {
 	},
 	audio : null,
 	defaultSound: 'chrome://TbChatNotification/content/sound/notification.ogg',
+	muteSound: 'chrome://TbChatNotification/content/sound/mute.ogg',
 
 	trayicon : {
 		loaded : false,
@@ -208,6 +209,8 @@ var TbChatNotifier = {
 
 		if (this.canNotifyOfMention(subject)) {
 			src = this.options.soundfilemention;
+		} else if (this.canNotifyOfSpecificChat(subject)) {
+			src = this.getAudioSrcForSpecificChat(subject);
 		} else if (this.canNotifyOfMUC(subject)) {
 			src = this.options.soundfilemuc;
 		} else if (this.canNotifyOfPM(subject)) {
@@ -215,12 +218,26 @@ var TbChatNotifier = {
 		} else if (this.options.soundfile) {
 			src = this.options.soundfile;
 		}
-		// TODO: add logic for specific user / MUC notification (also mute)
 
 		if (src == null) {
 			return this.defaultSound;
 		} else {
 			return 'file://' + src;
+		}
+	},
+
+	/**
+	 * Get audio file for a specific chat
+	 * @param subject {Object}
+	 * @returns {*}
+	 */
+	getAudioSrcForSpecificChat : function (subject) {
+		var key = subject.conversation.isChat ? subject.conversation.name : subject.alias;
+		var prefs = this.options.soundfilespecific[key];
+		if (prefs.mute) {
+			return this.muteSound;
+		} else {
+			return prefs.soundFile;
 		}
 	},
 
@@ -232,6 +249,16 @@ var TbChatNotifier = {
 	canNotifyOfMention : function (subject) {
 		return Boolean(subject.conversation.isChat
 			&& subject.containsNick && this.options.soundfilemention);
+	},
+
+	/**
+	 * Check if we can notify about a message in a specific chat (user to user or MUC)
+	 * @param subject {Object}
+	 */
+	canNotifyOfSpecificChat : function (subject) {
+		var key = subject.conversation.isChat ? subject.conversation.name : subject.alias;
+		var prefs = this.options.soundfilespecific[key];
+		return Boolean(prefs && prefs.soundFile);
 	},
 
 	/**

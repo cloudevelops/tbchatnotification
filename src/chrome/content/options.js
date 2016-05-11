@@ -144,7 +144,6 @@ var options = {
 	renderSoundsList : function () {
 		var self = this;
 		var prefs = this.getSoundsListPref();
-		this.applicationService.console.log('prefs: ' + JSON.stringify(prefs));
 		Object.keys(prefs).sort().forEach(function (key) {
 			self.addListItem(key, prefs[key]);
 		});
